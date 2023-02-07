@@ -1,0 +1,33 @@
+.ul {
+    background-color: #FFDAB9;
+			width: 150px;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			border: solid 1px black;
+}
+
+.li {
+    border-bottom: solid 1px black; 
+}
+
+.li li:last-child { border-bottom: none; }
+
+.li a {
+    display: block;
+    color: #000000;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.li a.current {
+    background-color: #FF6347;
+    color: white;
+}
+
+.li a:hover:not(.current) {
+    background-color: #CD853F;
+    color: white;
+}
