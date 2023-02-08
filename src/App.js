@@ -2,38 +2,22 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-} from "react-router-dom"; 
-import HomePage from "./components/home";
-import FindCrewPage from "./components/findCrew";
-import CreateCrewPage from "./components/createCrew";
-import MyPage from "./components/myPage";
-import Login from "./components/login";
-
-
-
-
+} from "react-router-dom";
+import Main from './page/main';
+import CreateCrewPage from './page/createCrew';
+import ListItem from "./page/ListItem";
 
 function App() {
-  return (
-    <div>
-    <Router>
+  return <Router>
     <Routes>
-      <Route path="/" element={<HomePage/>}>
+      <Route path='/' element={<CreateCrewPage />}>
       </Route>
-      <Route path="/createcrew" element={<CreateCrewPage/>}> 
-      </Route>
-      <Route path="/findcrew" element={<FindCrewPage/>}> 
-      </Route>
-      <Route path="/mypage" element={<MyPage/>}> 
-      </Route>
-      <Route path="/login" element={<Login/>}> 
-      </Route>
-      <Route path="/login" element={<Login/>}> 
+      <Route path="/createCrew" element={<ListItem />}>
       </Route>
     </Routes>
   </Router>
-  </div>
-  );
+
+
 }
 
 export default App;
