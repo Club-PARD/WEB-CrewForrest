@@ -1,4 +1,4 @@
-.ul {
+.Ul {
     background-color: #FFDAB9;
 			width: 150px;
 			list-style-type: none;
@@ -7,13 +7,13 @@
 			border: solid 1px black;
 }
 
-.li {
+.Li {
     border-bottom: solid 1px black; 
 }
 
-.li li:last-child { border-bottom: none; }
+.Li Li:last-child { border-bottom: none; }
 
-.li a {
+.Li a {
     display: block;
     color: #000000;
     padding: 8px;
@@ -22,12 +22,12 @@
     font-weight: bold;
 }
 
-.li a.current {
+.Li a.current {
     background-color: #FF6347;
     color: white;
 }
 
-.li a:hover:not(.current) {
+.Li a:hover:not(.current) {
     background-color: #CD853F;
     color: white;
 }

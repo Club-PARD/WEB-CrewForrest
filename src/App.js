@@ -2,22 +2,35 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-} from "react-router-dom";
-import Main from './page/main';
-import CreateCrewPage from './page/createCrew';
-import ListItem from "./page/ListItem";
+} from "react-router-dom"; 
+import HomePage from "./components/home";
+import FindCrewPage from "./components/findCrew";
+import CreateCrewPage from "./components/createCrew";
+import MyPage from "./components/myPage";
+import Login from "./components/login";
+
+
+
 
 function App() {
-  return <Router>
+  return (
+    
+    <Router>
     <Routes>
-      <Route path='/' element={<CreateCrewPage />}>
+      <Route path="/" element={<HomePage/>}>
       </Route>
-      <Route path="/createCrew" element={<ListItem />}>
+      <Route path="/createcrew" element={<CreateCrewPage/>}> 
+      </Route>
+      <Route path="/findcrew" element={<FindCrewPage/>}> 
+      </Route>
+      <Route path="/mypage" element={<MyPage/>}> 
+      </Route>
+      <Route path="/login" element={<Login/>}> 
       </Route>
     </Routes>
   </Router>
-
-
+  
+  );
 }
 
 export default App;

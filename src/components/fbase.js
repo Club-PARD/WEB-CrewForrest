@@ -6,13 +6,13 @@ import { getStorage } from "firebase/storage"; // storage 연결
 
 
    const firebaseConfig = {
-    apiKey: "AIzaSyCA6rlKrq4vH3h1o_xqifZZOhwcgvjOuCI",
-    authDomain: "animalforrest-8ba3e.firebaseapp.com",
-    projectId: "animalforrest-8ba3e",
-    storageBucket: "animalforrest-8ba3e.appspot.com",
-    messagingSenderId: "709488153051",
-    appId: "1:709488153051:web:85d5d960ec78132ecd17fe",
-    measurementId: "G-JKZQ5587Q0"
+    apiKey: "AIzaSyAjKvwNlr46XqvHbkqN0rppq4XnB17f2us",
+    authDomain: "crewforest-95461.firebaseapp.com",
+    projectId: "crewforest-95461",
+    storageBucket: "crewforest-95461.appspot.com",
+    messagingSenderId: "232811124432",
+    appId: "1:232811124432:web:2fc471dcd2b1100ee0b0d5",
+    measurementId: "G-LWB8Z61EPS"
   };
 
 

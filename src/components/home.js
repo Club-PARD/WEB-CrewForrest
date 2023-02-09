@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import findCrew from './findCrew';
-import "./home.css";
+
+
 import Modal from './modal';
 import styled, { css } from 'styled-components'
+import createCrew from './createCrew';
 
 import {
-    BrowserRouter as Router,
-    Route,
-    Routes,
-  } from "react-router-dom"; 
- 
-
-  import { useEffect } from "react";
-  import { auth, dbService, storage } from './fbase';
-  import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
-  import Hello from "./home";
-  
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 
-function crewClick (){
-    console.log("hi");
-    // return(location.href="/findcrew");
+import { useEffect } from "react";
+import { auth, dbService, storage } from './fbase';
+import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from 'firebase/auth';
+import Hello from "./home";
+import btn from "./nav";
+
+
+
+function crewClick() {
+  console.log("hi");
+  // return(location.href="/findcrew");
 };
 
-   
+
+
+
+
+
 
 const Home = () => {
 
@@ -37,15 +44,15 @@ const Home = () => {
   const [init, setInit] = useState(false);
   const [logFirst, setLogFirst] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  
+
 
   const onClickButton = () => {
     setIsOpen(true);
   };
 
-  function handleGoogleLogin() {  
+  function handleGoogleLogin() {
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
-  
+
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
         setInit(true)
@@ -58,81 +65,70 @@ const Home = () => {
         // handleOnSubmitWithdocUserid(personUid, personEmail, personName);
         // console.log(userData.length === 1 ? "처음 로그인한 유저 입니다. " : "이 유저는 처음 로그인한 유저가 아닙니다.");
         // console.log(userData.)
-        if(logFirst){
+        if (logFirst) {
           console.log("로그인 처음이 아닙니다");
-        }else{
+        } else {
           console.log("로그인이 처음이시네요");
           setLogFirst(true);
         }
-      } 
-        
+      }
+
       )
       .catch((err) => {
         console.log(err);
-      }); 
-     
+      });
+
   }
-  
-  function Logincheck(){
-    if(logFirst){
+
+  function Logincheck() {
+    if (logFirst) {
       return false;
     }
-    else{
+    else {
       return true;
     }
   }
-  
+
   const onLogOutClick = () => { // 로그아웃
     auth.signOut();
     console.log('logout')
   };
-  
-  function onReadUserData(user){
+
+  function onReadUserData(user) {
     auth.onAuthStateChanged(async (user) => { // 실시간으로 계속해서 user의 정보를 읽어오는 과정
       if (user) { // 로그인 상태
-        console.log(user); 
+        console.log(user);
         return true;
       } else { // 로그아웃 상태
-        console.log(user); 
+        console.log(user);
         return false;
       }
     });
   }
 
+
+
   return (
     <div>
       <h1>home</h1>
       <p>homepage</p>
-     
-    <ul>
-    <ul>
-		<li><a href="/index.php">Home</a></li>
-		<li><a class="current" href="/html/intro">HTML</a></li>
-		<li><a href="/css/intro">CSS</a></li>
-		<li><a href="/javascript/intro">자바스크립트</a></li>
-	</ul>
-	</ul>
-      
-      <Link to="/findcrew"><li>findCrew로 이동</li></Link> //화면 이동 태그
-      <Link to="/createcrew"><li>createCrew로 이동</li></Link> //화면 이동 태그
-      <Link to="/mypage"><li>myPage로 이동</li></Link> //화면 이동 태그
-    
-      <AppWrap>
-      <Button onClick={onClickButton}>Click Me !</Button>
-      {isOpen && (<Modal
-        open={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      />)}
-    </AppWrap>
 
-    <button onClick={handleGoogleLogin}>구글 로그인</button>
-        <>
-          {init
-            ? <h3>로그인 후 유저 이름 : {userData.displayName}</h3>
-            : <h3>로그인 전</h3>}
-        </>
+
+      <Link to="/findcrew"><li>findCrew로 이동</li></Link> //화면 이동 태그
+      <Link to="/createCrew"><li>createCrew로 이동</li></Link> //화면 이동 태그
+      <Link to="/mypage"><li>myPage로 이동</li></Link> //화면 이동 태그
+
+      <AppWrap>
+        <Button onClick={onClickButton}>Click Me !</Button>
+        {isOpen && (<Modal
+          open={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        />)}
+      </AppWrap>
+
+    
     </div>
   );
 };
@@ -156,5 +152,7 @@ const AppWrap = styled.div`
   text-align: center;
   margin: 50px auto;
 `;
+
+
 
 export default Home;

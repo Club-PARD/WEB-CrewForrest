@@ -2,26 +2,61 @@ import React from "react";
 import styled, { css } from 'styled-components'
 import image from "./google.png";
 import image2 from "./kakao.png";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth, dbService, storage } from './fbase';
-import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from 'firebase/auth';
+import { collection, setDoc, doc, updateDoc, deleteField, deleteDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
 
 
 
 
-function GoLogin(){
+function UploadeLoginInfromation() {
+    const [UserName, setUserName] = useState();
+    const [UserEmail, setUserEmail] = useState();
+    
+    const onChange = (event) => { 
+      const {
+        target: { value }
+      } = event;
+      setUserName(value);
+      setUserEmail(value);
+    };
 
-}
+  }
 
 function Modal({ onClose }) {
+  const [valuel, setValuel] = useState();
   const [init, setInit] = useState(false);
   const [userData, setUserData] = useState("");
   const [logFirst, setLogFirst] = useState(false);
 
 
-  function handleGoogleLogin() {  
-    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+  const onChange = (event) => { //input 값이 입력 될 때 onchange를 통해 자동적으로 setState해준다! = 동기화 시켜주기
+    const {
+      target: { value }
+    } = event;
+    console.log(value);
+    setValuel(value);
+  };
+
+
+  function handleOnSubmitWithdocUserid(personEmail, personName) {  // firebase create 함수 원하는 collection 안에 원하는 doc을 입력할 떄 쓴다.
+    console.log('로그인시에 유저 정보를 저장 시작');
+    const docRef = setDoc(doc(dbService, "userboard", personName), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
+      Name: personName,
+      Email: personEmail,
+    });
+    if (docRef) {
+      setValuel();
+      console.log('create 유저 정보 저장 성공');
+    }
+  }
   
+
+
+  function handleGoogleLogin() {
+    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
         setInit(true)
@@ -29,49 +64,52 @@ function Modal({ onClose }) {
         console.log(userData); // console로 들어온 데이터 표시
         // console.log(auth.currentUser); // 현재 로그인한 사람의 정보를 auth로 부터 읽어오기
         const personName = auth.currentUser.displayName;
-        const personUid = auth.currentUser.uid;
         const personEmail = auth.currentUser.email;
         // handleOnSubmitWithdocUserid(personUid, personEmail, personName);
         // console.log(userData.length === 1 ? "처음 로그인한 유저 입니다. " : "이 유저는 처음 로그인한 유저가 아닙니다.");
         // console.log(userData.)
-        if(logFirst){
+        handleOnSubmitWithdocUserid(personEmail, personName);
+        
+        if (logFirst) {
           console.log("로그인 처음이 아닙니다");
-        }else{
+          console.log(personEmail);
+        } else {
           console.log("로그인이 처음이시네요");
           setLogFirst(true);
         }
-      } 
-        
+       
+      }
+
       )
       .catch((err) => {
         console.log(err);
-      }); 
-     
+      });
+
   }
   const handleClose = () => {
     onClose?.();
   };
   return (
     <Overlay>
-        <ModalWrap>
-          <CloseButton onClick={handleClose}>
-            <i className="fa-solid fa-xmark"></i>
-          </CloseButton>
-          <Contents>
-          <button onClick={handleGoogleLogin} 
-          className="google">
-          <img src={image}></img>Google 계정으로 로그인</button>
+      <ModalWrap>
+        <CloseButton onClick={handleClose}>
+          <i className="fa-solid fa-xmark"></i>
+        </CloseButton>
+        <Contents>
+          <button onClick={handleGoogleLogin}
+            className="google">
+            <img src={image}></img>Google 계정으로 로그인</button>
           <>
-          {init
-            ? <h3>로그인 후 유저 이름 : {userData.displayName}</h3>
-            : <h3>로그인 전</h3>}
-         </>
-            <h1>This is a Modal Dialog</h1>
-            <button  img src={image}></button>
-            <Button onClick={handleClose} >Close</Button>
-          </Contents>
-        </ModalWrap>
-      </Overlay>
+            {init
+              ? <h3>로그인 후 유저 이름 : {userData.displayName}</h3>
+              : <h3>로그인 전</h3>}
+          </>
+          <h1>This is a Modal Dialog</h1>
+          <button img src={image}></button>
+          <Button onClick={handleClose} >Close</Button>
+        </Contents>
+      </ModalWrap>
+    </Overlay>
   );
 }
 const Overlay = styled.div`
