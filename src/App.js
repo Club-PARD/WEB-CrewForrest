@@ -2,35 +2,32 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-} from "react-router-dom"; 
+} from "react-router-dom";
+import CreateCrewPage from './page/createCrew';
 import HomePage from "./components/home";
-import FindCrewPage from "./components/findCrew";
-import CreateCrewPage from "./components/createCrew";
-import MyPage from "./components/myPage";
-import Login from "./components/login";
-
-
+import FindCrewPage from "./page/findCrew";
+import Login from "./page/login";
+import MyPage from "./page/MyPage";
+import ListItem from "./page/ListItem";
+import { firestore } from "./fbase";
+import './components/layout/menu'
 
 
 function App() {
-  return (
-    
-    <Router>
+  return <Router>
     <Routes>
-      <Route path="/" element={<HomePage/>}>
+      <Route path="/" element={<HomePage />}>
       </Route>
-      <Route path="/createcrew" element={<CreateCrewPage/>}> 
+      <Route path="/createcrew" element={<CreateCrewPage />}>
       </Route>
-      <Route path="/findcrew" element={<FindCrewPage/>}> 
-      </Route>
-      <Route path="/mypage" element={<MyPage/>}> 
+      <Route path="/findcrew" element={<FindCrewPage/>}>
       </Route>
       <Route path="/login" element={<Login/>}> 
       </Route>
+      <Route path="/MyPage" element={<MyPage/>}>
+      </Route>
     </Routes>
   </Router>
-  
-  );
 }
 
 export default App;
