@@ -176,7 +176,7 @@ function MyPage() {
 
           <p1>닉네임 :    {currentName} <button onClick={changeMyinfo} title='modifybtn'  >저장</button></p1> <br></br>
           <br></br>
-          <input type='text' value={currentName} placeholder={currentName} requred onChange={onChange} />
+          <input type='text' value={currentName} placeholder={nickname} requred onChange={onChange} />
 
         </div>
       }
