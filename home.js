@@ -57,11 +57,11 @@ const Home = () => {
     
     // carousel.style.transform = `translate3d(-${500 * index}px, 0, 0)`;
     // });
-
-    
-    
     finduid();
-
+    console.log(nickname);
+    
+    
+    
     async function setUserName() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
       const docRef = doc(dbService, "user", uid);
       const docSnap = await getDoc(docRef);
@@ -70,7 +70,6 @@ const Home = () => {
         console.log(data);
         setNickname(data['nickname']);
         console.log(nickname);
-        
       } 
     }
     
@@ -80,10 +79,12 @@ const Home = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setUid(data["uid"]);
+        console.log(uid);
         setUserName();
       } 
     }
 
+    
     
 
     function makeCurrentUid(){
@@ -131,31 +132,52 @@ const Home = () => {
     setIsOpen(true);
   };
 
-  async function checkNewUser(){              // 로그인 처음인지 확인해 주는 함수 
+  async function checkNewUser(){    
+    console.log("돌아가는중 ");          // 로그인 처음인지 확인해 주는 함수 
     const docRef = doc(dbService, "user", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         console.log('기존 유저');
-        setLogFirst(false);
+        
     } else {
-      console.log('새로운 유저');
-      setLogFirst(true);
+      console.log('User, uid 정보들 저장 시작');
+      const docRef = setDoc(doc(dbService, "user", auth.currentUser.uid), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
+        nickname: auth.currentUser.displayName,
+        email : auth.currentUser.email,
+        uid : auth.currentUser.uid
+      });
+      if (docRef) {
+        console.log('create firstStep에 저장 성공');
+      }
     } 
   }
+
+  function deleteCurrentuser() {  // firebase Delete : 함수 원하는 collection 안에 원하는 doc 안에 특정 field를 삭제한다.
+    console.log('delete 시작');
+    const docRef = doc(dbService, "currentuser", 'now');
+    updateDoc(docRef, {
+      uid: deleteField()
+    });
+    if (docRef) {
+      console.log('delete 성공');
+    }
+  }
+
 
   function GoogleLogin() {  
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
     
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
+        deleteCurrentuser();
         setUserData(data.user); // user data 설정
-        console.log(userData); // console로 들어온 데이터 표시
         const personName = auth.currentUser.displayName;
         const personUid = auth.currentUser.uid;
         const personEmail = auth.currentUser.email;
         makeCurrentUid();
+
         checkNewUser(); // 로그인 처음인지 확인해 주는 함수 처음이면 logFirst true 
-        if(logFirst === true){ // 로그인 처음인지 구별하는 const 값 
+        if(logFirst){ // 로그인 처음인지 구별하는 const 값 
           makeUser();
           makeLMA();
         }
