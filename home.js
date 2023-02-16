@@ -19,12 +19,6 @@ import { async } from '@firebase/util';
   
 
 
-function crewClick (){
-    console.log("hi");
-    // return(location.href="/findcrew");
-};
-
-   
 
 const Home = () => {
 
@@ -64,16 +58,18 @@ const Home = () => {
     // carousel.style.transform = `translate3d(-${500 * index}px, 0, 0)`;
     // });
 
+    
+    
     finduid();
-    console.log(nickname);
-
 
     async function setUserName() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
       const docRef = doc(dbService, "user", uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
+        console.log(data);
         setNickname(data['nickname']);
+        console.log(nickname);
         
       } 
     }
@@ -88,15 +84,7 @@ const Home = () => {
       } 
     }
 
-    async function showUserName(){
-      const docRef = doc(dbService, "user", auth.currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        setCurrentUser(docSnap.data());
-      } 
-
-    }
+    
 
     function makeCurrentUid(){
       const docRef = setDoc(doc(dbService, "currentuser", "now"), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
@@ -167,14 +155,19 @@ const Home = () => {
         const personEmail = auth.currentUser.email;
         makeCurrentUid();
         checkNewUser(); // 로그인 처음인지 확인해 주는 함수 처음이면 logFirst true 
-        console.log(logFirst);
-        console.log(currentuser);
         if(logFirst === true){ // 로그인 처음인지 구별하는 const 값 
           makeUser();
           makeLMA();
-        }else{
-
         }
+        // if(nickname === ""){
+        //   setUid(auth.currentUser.uid);
+        //   setUserName();
+
+        // }else{
+        //   setUid(auth.currentUser.uid);
+        //   console.log("이름 있음");
+        //   setUserName();
+        // }
         
       } 
         
@@ -182,7 +175,7 @@ const Home = () => {
       .catch((err) => {
         console.log(err);
       }); 
-     
+
   }
   
 
