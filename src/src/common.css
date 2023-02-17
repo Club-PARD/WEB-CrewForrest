@@ -1,3 +1,6 @@
+body{
+    background-color: #F8F9FA;
+}
 /*양식조건 미충족시*/
 .invalid{
     border-color: #FF7B7B;
@@ -5,9 +8,9 @@
 /*캐러셀 박스*/
 .carousel-wrapper {
     position: absolute;
-    width: 1673px;
+    width: 1750px;
     height: 350px;
-    left: 300px;
+    left: 225px;
     top: 60px;
 
     background: #96B47E;
@@ -15,9 +18,9 @@
 }
 .carouselBox{
     position: absolute;
-    width: 1673px;
+    width: 1750px;
     height: 350px;
-    left: 300px;
+    left: 225px;
     top: 60px;   
 }
 .carousel-wrapper > .carousel {
@@ -108,7 +111,35 @@ border-radius: 20px;
     outline: 0;
     cursor: pointer;
 }
+.headerSection {
+    position: absolute;
+    /* left: 90.57%; */
+    width: 38px;
+    height: 0.001px;
+    left: 1690px;
+    top: 15px;
+    /* Gray/Outline */
+    
+    border: 1px solid #DADCE0;
+    transform: rotate(90deg);
+}
+.nameSection {
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    left: 1728px;
+    top: 5px;
 
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+
+    /* Gray/Font */
+
+    color: #5B6671;
+}
 .loginBt{
     position: absolute;
     left: 94.79%;
@@ -118,6 +149,64 @@ border-radius: 20px;
     cursor:pointer;
     background-color: #FFFFFF;
     border:none;
+}
+.googleLoginBt {
+    position: absolute;
+    left: 43.8%;
+    top: 47%;
+    cursor: pointer;
+}
+/*로그인 모달창*/
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+.modal button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+}
+.modal > section {
+    width: 424px;
+    height: 248px;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: #fff;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-show 0.3s;
+    overflow: hidden;
+}
+.modal > section > header {
+position: relative;
+padding: 16px 64px 16px 16px;
+background-color: #FFFFFF;
+font-weight: 700;
+}
+.modal > section > header button {
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 50px;
+    font-weight: 50;
+    text-align: center;
+    color: #6C8F56;;
+    background-color: transparent;
+}
+
+.modal.openModal {
+    display: flex;
+    align-items: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-bg-show 0.3s;
 }
 /*헤더*/
 /*  헤더 섹션 */
@@ -155,7 +244,7 @@ border-radius: 20px;
 }
 .searchBox2{
     position: absolute;
-    left: 86.5%;
+    left: 85.8%;
     right: 10.36%;
     top: 20%;
     bottom: 20%;   
@@ -166,7 +255,7 @@ ul{
     box-sizing: border-box;
 
     position: absolute;
-    width: 300px;
+    width: 225px;
     height: 959px;
     left: 0px;
     top: 59px;
@@ -277,24 +366,7 @@ li a:hover{
     flex-grow: 0;
     cursor: pointer;
 }
-/*작성했을 때 모달창*/
-.modal{
-    position:absolute;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.27), 0 2px 8px rgba(0, 0, 0, 0.7);
-}
-.modal .modal_closeBtn{
-    background-color: #6C8F56;
-}
-.hidden{
-    display: none;
-}
+
 /*크루 만들기 글씨 위치*/
 .createCrewText{
     position: absolute;
@@ -599,7 +671,7 @@ color: #24272B;
 border:none;
 resize:none;
 width: 860px;
-height: 250px;
+height: 240px;
 }
 
 /*메인 홈 요즘 핫한크루 text*/
@@ -788,7 +860,7 @@ a{
 position: absolute;
 left: 1%;
 right: 60%;
-top: 77.35%;
+top: 90%;
 bottom: 8%;
 font-family: 'Pretendard';
 font-style: normal;
@@ -807,7 +879,7 @@ color: #5B6671;
     position: absolute;
     left: 1%;
     right: 60%;
-    top: 81%;
+    top: 94%;
     bottom: 8%;
     font-family: 'Pretendard';
     font-style: normal;
@@ -824,7 +896,7 @@ color: #5B6671;
 position: absolute;
 left: 1%;
 right: 82%;
-top: 81.4%;
+top: 94.35%;
 bottom: 3.65%;
 padding-left: 8px;
 }
@@ -846,4 +918,213 @@ line-height: 20px;
     /* Black_Font */
     
     color: #24272B;
+}
+/*MyPage*/
+.myProfile{
+    position: absolute;
+    width: 200px;
+    height: 500px;
+    left: 400px;
+    top: 80px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 36px;
+    /* identical to box height, or 129% */
+
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.myProfileBox{
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    left: 400px;
+    top: 163px;
+
+    background: #FFFFFF;
+    /* Gray/Outline */
+
+    border: 1px solid #DADCE0;
+    border-radius: 8px;
+}
+.testProfile{
+    position: absolute;
+    left: 400px;
+    top: 350px;
+}
+.nameText{
+    position: absolute;
+    width: 120px;
+    height: 20px;
+    left: 90px;
+    top: -155px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 20px;
+    /* identical to box height, or 125% */
+
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.emailText{
+    position: absolute;
+    width: 120px;
+    height: 20px;
+    left: 90px;
+    top: -130px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 20px;
+    /* identical to box height, or 125% */
+
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.editBt{
+    position: absolute;
+    left: 410px;
+    top: -155px; 
+    cursor:pointer;
+}
+.profileDiv{
+    position: absolute;
+    left: 20px;
+    top: -90px;
+    width: 460px;
+
+    /* Gray/Outline */
+
+    border: 1px solid #DADCE0;
+}
+.nicknameText{
+    position: absolute;
+    width: 160px;
+    height: 20px;
+    left: 20.5px;
+    top: -90px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.nicknameT{
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    left: 150px;
+    top: -91px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.loginRoute{
+    position: absolute;
+    width: 160px;
+    height: 20px;
+    left: 20.5px;
+    top: -60px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.googleLogin{
+    position: absolute;
+    width: 160px;
+    height: 20px;
+    left: 150px;
+    top: -62px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.addressText{
+    position: absolute;
+    width: 160px;
+    height: 20px;
+    left: 20.5px;
+    top: -30px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.address{
+    position: absolute;
+    width: 200px;
+    height: 20px;
+    left: 150px;
+    top: -30px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
+    /* Black_Font */
+
+    color: #24272B;
+}
+.profilePic{
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    left: 20px;
+    top: -155px; 
+}
+.profileIcon{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 1845px;
+    top: 14.5px; 
 }
