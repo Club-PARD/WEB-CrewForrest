@@ -166,9 +166,9 @@ function MyPage() {
 
   function showData(){
     finduid(); // uid 찾는 함수 
-    readM(); // 찾은 uid로 M1 정보를 읽어오는 함수 
-    showM1();
-    showM2();
+    readM(); // 찾은 uid로 가장 최근 쓴 글 M 의 2개 정보 읽어오는 함수 (랜덤 아이디 읽어옴 )
+    showM1(); (읽어온 랜덤 ID로 console창에 띄우는 함수 )
+    showM2(); (m1은 두번째 최근 정보 요 함수는 가장 최근 쓴 글 읽어옵니다) 
     
   }
 
