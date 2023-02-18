@@ -74,9 +74,9 @@ function CreateCrewPage() {
           setRandomid(docRef.id);
           finduid(); // 현재 유저의 uid 찾기 
           readM(); // 찾은 uid로 M(자기가 적은 글 랜덤 id읽기 ) 
-          readData();
-          updateData();
-          updateM();
+          readData(); // Data 예전꺼 지우기 
+          updateData(); // Data 방금 만든거 추가하기 1번으로 => 요거는 collection home 에서 각각의 document에 맞게 (ex 독서 , 원데이 => d, o , n(new crew) 에 업데이트됨 )
+          updateM(); // 개인 uid M 항목에 추가 
           
 
         } if (CrewTitle.length > 16) {
