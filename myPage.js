@@ -1,344 +1,199 @@
-import React, { useState, useEffect, useId } from 'react';
-import ListItem from '../components/ListItem';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { collection, setDoc, doc, updateDoc, deleteField, deleteDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
-
-import { app, auth, dbService, storage } from "../fbase";
+import { auth, dbService, storage } from '../fbase';
+import { useState, useEffect } from "react";
 import "../common.css";
 
 
-function useFetch(url) {
 
-    const [data, setData] = useState([]);
-    
-    async function fetchUrl() {
-        const response = await fetch(url);
-        const json = await response.json();
-        
-        setData(json);
-    }
-    
-    useEffect(() => {
-        fetchUrl();
-    }, []);
-    return data;
-}
+function MyPage() {
 
-function CreateCrewPage() {
-    const [CrewTitle, setCrewTitle] = useState("");
-    const [oneday, setOneday] = useState("");
-    const [Category, setCategory] = useState("");
-    const [Intro, setIntro] = useState("");
-  
-    const [Crew, setCrew] = useState();
-    const [users, setUsers] = useState([]);  //users 추가하고 삭제하는거 진행을 도와줄 state
-    
-    const uniqueId = useId(); // 유니크 id를 만들기 위한 useId()
-    const [attachment, setAttachment] = useState();
-    const data = useFetch("/api/list");
-    const [uid, setUid] = useState("");
-    const [mdata, setMdata] = useState("");
-    const [randomid, setRandomid] = useState("");
-    const [ b, setB ] = useState("");
-    const [ e, setE ] = useState("");
-    const [ m, setM] = useState("");
-    const [ n, setN ] = useState("");
-    const [ o, setO ] = useState("");
-    const [ p, setP ] = useState("");
-    const [ v, setV ] = useState("");
+  const [modify, setModify] = useState(true);
+  const [uid, setUid] = useState("");
+  const [userEmail, setuserEmail] = useState("");
+  const [currentName, setCurrentName] = useState("");
+  const [datam1, setDatam1] = useState("");
+  const [datam2, setDatam2] = useState("");
+  const [datam3, setDatam3] = useState("");
 
-    
-    const onChange = (event) => { 
-        const {
-          target: { value }
-        } = event;
-        setCrewTitle(value);
-        setOneday(value);
-        setCategory(value);
-        setIntro(value);
-      };
+  const [dataa1, setDataa1] = useState("");
+  const [dataa2, setDataa2] = useState("");
 
-      
-    //Create
-    async function handleOnSubmitWithdoc() { 
-      console.log(CrewTitle);
-      const docRef = await addDoc(collection(dbService, "crew"), {
-        CrewTitle: CrewTitle,
-        Oneday: oneday,
-        Category: Category,
-        Intro: Intro,
-      });
-        if (docRef) {
-          setCrew();
-          console.log('crew crewInformation에 저장 성공');
-          console.log(docRef.id);
-          setRandomid(docRef.id);
-          finduid();
-          readM();
-          readData();
-          updateData();
-          updateM();
-          
-
-        } if (CrewTitle.length > 16) {
-          alert("양식을 다시 확인해주세요.");
-        } else console.log("저장되었습니다!");
-        
-      }
-    //Update  
-    
-    async function updateData() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-      
-      const docRef = doc(dbService, "home", "new");
-      const docSnap = await getDoc(docRef);
-      updateDoc(docRef, {
-        1 : randomid
-       });
-
-       
-       console.log("실행중 이상현");
+  const [datal1, setDatal1] = useState("");
+  const [datal2, setDatal2] = useState("");
+  const [datal3, setDatal3] = useState("");
 
 
-      if(Category === "운동/스포츠"){
-        const docRef1 = doc(dbService, "home", "exercise");
-      const docSnap1 = await getDoc(docRef1);
-      updateDoc(docRef1, {
-        1 : randomid
-       });
-      }
-      
-      if(Category === "독서"){
-      const docRef2 = doc(dbService, "home", "book");
-      const docSnap2 = await getDoc(docRef2);
-      updateDoc(docRef2, {
-        1 : randomid
-       });
-    }
+  const [oneday, setOneday] = useState("");
+  const [Category, setCategory] = useState("");
+  const [Intro, setIntro] = useState("");
+  const [mdata, setMdata] = useState("");
+  const [mdata2, setMdata2] = useState("");
+  const [mc1T, setmc1T] = useState(); // make crew 1 title 
+  const [mc1I, setmc1I] = useState(); // make crew 1 title 
+  const [mc2T, setmc2T] = useState(); // make crew 1 title 
+  const [mc2I, setmc2I] = useState(); // make crew 1 title 
+  const [makecrew2, setMakecrew2] = useState();
+  const [makecrew1, setMakecrew1] = useState();
 
-    if(Category === "공예"){
-      const docRef3 = doc(dbService, "home", "make");
-      const docSnap3 = await getDoc(docRef3);
-      updateDoc(docRef3, {
-        1 : randomid
-       });
-    }
 
-    if(Category === "사진/영상"){
-      const docRef4 = doc(dbService, "home", "photo");
-      const docSnap4 = await getDoc(docRef4);
-      updateDoc(docRef4, {
-        1 : randomid
-       });
-    }
+  // --------------------------------------------------------- 여기부터 새로 짜는 코드 ---------------------------------------------------------------------------------------------- //    
 
-    if(Category === "봉사활동"){
-      const docRef5 = doc(dbService, "home", "volunteer");
-      const docSnap5 = await getDoc(docRef5);
-      updateDoc(docRef5, {
-        1 : randomid
-       });
-    }
+  const [nickname, setNickname] = useState(""); // 닉네임 재설정 부분 초기화 
 
-    if(oneday === ""){
-      const docRef6 = doc(dbService, "home", "one");
-      const docSnap6 = await getDoc(docRef6);
-      updateDoc(docRef6, {
-        1 : randomid
-       });
-      
+  finduid();
+  setUserInfo();
+  readM(); // 찾은 uid로 M1 정보를 읽어오는 함수 
+  showM1();
+  showM2();
+
+
+  useEffect(() => {     
+    console.log(auth.currentUser);                      // 한번만 닉네임 유저 이름으로 설정 
+    // setNickname(auth.currentUser.displayName);
+    // setCurrentName(auth.currentUser.displayName);
+  }, [])
+
+  function changename() {
+    console.log('유저 이름 update 시작');
+    const docRef = doc(dbService, "user", auth.currentUser.uid);
+    updateDoc(docRef, {
+      nickname : currentName
+    });
+    if (docRef) {
+      console.log(modify);
     }
   }
 
-  async function readData() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-      
-    const docRef = doc(dbService, "home", 'new');
-    const docSnap = await getDoc(docRef);
-    const a = docSnap.data()[1];
-    setN(a);
-    updateDoc(docRef, {
-        2 : n
-       });
+  function changeMyinfo(){
+    if(modify === true){
+      console.log("안녕하세요");
+    }else{
+      changename();
+      setNickname(currentName);
+      console.log(nickname);
+    }
+    const instance = modify;
+    setModify(!instance);
+  }
 
-    const docRefm = doc(dbService, uid, 'M');
-    const docSnapm = await getDoc(docRef);
-    const am = docSnapm.data()[1];
-    // setN(a);
-    updateDoc(docRef, {
-        2 : am
-       });
+
+
+  
+
+  async function setUserInfo() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, "user", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setuserEmail(data.email);
+      setNickname(data.nickname);
+      
+    } 
+  }
 
  
-   
-
-    if(Category === "운동/스포츠"){
-      const docRef1 = doc(dbService, "home", "exercise");
-    const docSnap1 = await getDoc(docRef1);
-    const a1 = docSnap1.data()[1];
-    
-    setE(a1);
-    
-    updateDoc(docRef1, {
-      2 : e
-     });
-
+  async function finduid() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, "currentuser", "now");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      const instance = data.uid;
+      setUid(instance);
+      console.log(uid);
     }
-    
-    if(Category === "독서"){
-    const docRef2 = doc(dbService, "home", "book");
-    const docSnap2 = await getDoc(docRef2);
-    const a2 = docSnap2.data()[1];   
-    setB(a2);
-    updateDoc(docRef2, {
-      2 : b
-     });
   }
 
-  if(Category === "공예"){
-    const docRef3 = doc(dbService, "home", "make");
-    const docSnap3 = await getDoc(docRef3);
-    const a3 = docSnap3.data()[1];
-    setM(a3);
-    updateDoc(docRef3, {
-      2 : m
-     });
-  }
+  
 
-  if(Category === "사진/영상"){
-    const docRef4 = doc(dbService, "home", "photo");
-    const docSnap4 = await getDoc(docRef4);
-    const a4 = docSnap4.data()[1];
-    setP(a4);
-    updateDoc(docRef4, {
-      2 : p
-     });
-  }
-
-  if(Category === "봉사활동"){
-    const docRef5 = doc(dbService, "home", "volunteer");
-    const docSnap5 = await getDoc(docRef5);
-    const a5 = docSnap5.data()[1];
-    setV(a5);
-    updateDoc(docRef5, {
-      2 : v
-     });
-  }
-
-  if(oneday === ""){
-    const docRef6 = doc(dbService, "home", "one");
-    const docSnap6 = await getDoc(docRef6);
-    const a6 = docSnap6.data()[1];
-    setO(a6)
-    updateDoc(docRef6, {
-      2 : o
-     });
-    
-  }
-}
-
-    async function finduid() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-      const docRef = doc(dbService, "currentuser", "now");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const instance = data.uid;
-        setUid(instance);
-        console.log(uid);
-      }
-    }
-
-    async function readM() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-      const docRef = doc(dbService, uid, "M");
+  async function showM1() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+      const docRef = doc(dbService, "crew", mdata);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        // setFirstStep(docSnap.data().create);
-        const a = docSnap.data();
-        setMdata(a);
-        console.log(mdata);
+        const a = docSnap.data()['CrewTitle'];
+        const b = docSnap.data()['Intro']
+       
+        setmc1T(a);
+        setmc1I(b);
+        
+        console.log(makecrew1);
       } else {
         console.log("No such document!");
         
       }
     }
 
-    function updateM() {  // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 특정 field를 업데이트해주고 싶을 때 사용한다
+  async function showM2() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, "crew", mdata2);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+        const a = docSnap.data()['CrewTitle'];
+        const b = docSnap.data()['Intro']
+       
+        setmc2T(a);
+        setmc2I(b);
+        
+    } else {
+      console.log("No such document!");
       
-      const alpha = Object.keys(mdata).length+1;
-      const docRef = doc(dbService, uid, 'M');
-      updateDoc(docRef, {
-       [alpha] : randomid
-      });
-      if (docRef) {
-        console.log('update 성공');
-      }
     }
+  }
 
+  async function readM() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, uid, "M");
+    const docSnap = await getDoc(docRef);
     
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      // setFirstStep(docSnap.data().create);
+      const a = docSnap.data();
+      const alpha1 = Object.keys(a).length-1;
+      setMdata(docSnap.data()[alpha1]);
+      const alpha2 = Object.keys(a).length;
+      setMdata2(docSnap.data()[alpha2]);
+      console.log(mdata, mdata2);
+    } else {
+      console.log("No such document!");
+      
+    }
+  }
+
+ 
+
+  async function readm2(props) { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, "crew", mdata[props]);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      // setFirstStep(docSnap.data().create);
+      const a = docSnap.data();
+      setDatam2(a);
+      
+    } else {
+      console.log("No such document!");
+      
+    }
+  }
+
+ 
+
   
 
-    // crew를 생성하는 함수 => 버튼 눌렸을 때 firebase에 데이터 create 함수 랜덤 id 넣어줌 
-      function crewUpdate() {  
-        console.log('update 시작');
-        const docRef = doc(dbService, "crew");
-        updateDoc(docRef, {
-          CrewTitle: CrewTitle,
-          Oneday: oneday,
-          Category: Category,
-          Intro: Intro,
-          docid : doc.id,
-          docRef : docRef.id
-        });
-        if (docRef) {
 
-          setCrew();
-          console.log('update 성공');
-        }
-      }
+  const onChange = (event) => { //input 값이 입력 될 때 onchange를 통해 자동적으로 setState해준다! = 동기화 시켜주기
+    const {
+      target: { value }
+    } = event;
+    console.log(value);
+    setCurrentName(value);
+  };
 
-
-      //Delete
-      function handleOnDelte() { 
-        console.log('delete 시작');
-        const docRef = doc(dbService, "crewBoard", 'crewInformation');
-        deleteDoc(docRef, {
-          delete: deleteField()
-        });
-        if (docRef) {
-          setCrew();
-          console.log('delete 성공');
-        }
-      }
-      const onFileChange = (event) =>{
-        const{target:{files},
-      } = event;
-      const theFile = files[0]; //한 개의 파일만 input으로 지정 (첫번째 파일만 가져옴)
-      const reader = new FileReader(); //파일을 가지고 reader를 만듦
-      reader.onloadend = (finishedEvent) => {
-        const {currentTarget: { result },
-      } = finishedEvent;
-      setAttachment(result);
-      };
-      reader.readAsDataURL(theFile); //readAsDataURL을 사용해서 파일을 읽음
-      }
-      //const onClearAttachment = () => setAttachment(null)
-
-      // const open = document.querySelector(".open");
-      // const close = document.querySelector(".modal_closeBtn");
-      // const modal = document.querySelector(".modal");
-
-      // function init(){
-      //   open.addEventListener("click", function(){
-      //     modal.classList.remove("hidden");
-      //   });
-      //   close.addEventListener("click", function(){
-      //     modal.classList.add("hidden");
-      //   });
-      // }
-      // init();
-
-    return (   
-        <body>
-          {/* <div class="container"> */}
-            <header>
+  return (
+    <body>
+      {/* <header>
               <div class="site-title">
                 <img src="/img/로고.png" alt="logo" class="logoBox"/>
                 <img src="/img/crewSearchBt.png" alt="searchBt" class="searchBox" />
@@ -354,87 +209,74 @@ function CreateCrewPage() {
             <a href="https://pardhgu.notion.site/PARD-cc679bfd495b4074b9142abfa3db7046"><div class="navBarIntro">PARD 소개</div></a>
         <img src="./img/copyright.png" alt="" class="copyright"/>
         <div class="navBarIntro2">2023 크루의 숲</div>
-                <h3 class="createCrewText">크루 만들기</h3><br></br>
-                <div class="createCrewBox">
-                <div>
-                  <input type='text' id='title_txt' name='title' placeholder='  제목 (16자 이내로 적어주세요.)' class="firstBox" onChange={(event) => {setCrewTitle(event.target.value)}}/><br></br>
-                  
-                </div>
-                <div class='secondBox'>
-                  <h3 class="mustInput">* </h3>
-                  <h3 class="mainPhotoText">대표 사진</h3>
-                  <div class="selectPic">
-                    <center>
-                      <img src="/img/ImageLogo.png" alt="selectPhoto" class="imageLogoBox"/>
-                    </center>
+
+        <div><p1>안녕</p1></div>
+    
+        <div>
+            <p class="findCrewText">크루 찾기</p>
+            <div class="findCrewBox">
+                <img src="/img/카테고리.png" alt="" class="categoryLo"/>
+                <p class="findCrewTitle">원데이 크루 신청하세요!</p>
+                <p class="divideLine"></p>
+                <p class="findCrewIntro">
+                크루 이름 : 크루어스<br></br>
+                크루 모집 인원 : 10명<br></br>
+                크루 소개: 저희 ‘크루어스'는 테니스 크루로, 생긴지 2년정도 됐습니다! 테니스 궁금하신 분들 함께해요!<br></br>
+                크루 정모 일정 : 2023.02.10(금) 서울 종로구 테니스장 예정<br></br> 
+                크루 활동 지역 : 서울 전지역<br></br>
+
+  
+                </p>
+                <img src="/img/수정.png" alt="" class="applyBt2" onClick={handleOnUpdate}/>
+                <img src="/img/삭제.png" alt="" class="applyBt" onClick={handleOnDelte}/>
                 
-                {attachment && (
-                  <div>
-                    <img src={attachment} width="48px" height="48px"/>
-                  </div>
-                  )}
-                  </div>
-                <div class = "filebox">
-                  <label for="input-file">이미지 업로드</label>
-                  <input type="file" accept="image/*" id="input-file" onChange={onFileChange}/>
-                </div>
-                 <div class="onedayClassBox">
-                  원데이 크루 오픈 여부
-                    <input type="radio" name="openCrew" class="radioBt" value="Open" checked onChange={(event) => {setOneday(event.target.value)}}/>오픈
-                    <input type="radio" name="openCrew" class="radioBt" value="Not Open" onChange={(event) => {setOneday(event.target.value)}}/>미오픈 
-                    <div id='result'></div>
-                  </div>
-            <div class="categoryFrame">
-              <h3 class="mustInput">* </h3>
-              <h3 class="categoryText">카테고리</h3>
-                  <div class="categorySection">
-                    <input type="button" name="category"class="categoryBt" value="운동/스포츠" onClick={(event) => {setCategory(event.target.value)}}/>
-                    <input type="button" name="category" class="categoryBt" value="독서" onClick={(event) => {setCategory(event.target.value)}}/>
-                    <input type="button" name="category" class="categoryBt" value="공예" onClick={(event) => {setCategory(event.target.value)}}/>
-                    <input type="button" name="category" class="categoryBt" value="사진/영상" onClick={(event) => {setCategory(event.target.value)}}/>
-                    <input type="button" name="category" class="categoryBt" value="봉사활동" onClick={(event) => {setCategory(event.target.value)}}/>
-                  </div>             
-            </div><br></br>
-            </div>
-            <div class="thirdBox">
-                <h3 class="introStyleText">크루 소개글 양식</h3> 
-                <textarea id="intro" class="textareaForm" onChange={(event) => {setIntro(event.target.value)}}>
-                크루 이름: 
-                크루 모집 인원: 
-                크루 소개:
-                크루 정모 일정: 
-                크루 활동 지역: 
-                </textarea>
                 
-              </div>  
-              
-              <button id="write" class="crudBt" onClick={handleOnSubmitWithdoc}>작성</button>
-              {/* <div class="modal hidden" id="jsModal">
-                <button class="modal_closeBtn" id="jsCloseBtn">CLOSE</button>
-              </div> */}
-              {/* <button onClick={handleOnUpdate}>업데이트하기</button>
-              <button onClick={handleOnDelte}>삭제하기</button> */}
             </div>
-            <br></br>
-          {/* </div> */}
-          
-                <section className="list-wrapper">
-                {data.map(
-                    ({board_id, title, start_date, end_date}) => (
-                        <ListItem
-                            board_id={board_id}
-                            title={title}
-                            start_date={start_date}
-                            end_date={end_date}
-                            key={board_id}
-                        />
-                    )
-                )}
-                </section>
-        
+
+        <h1>findCrew</h1>
+        <p>findCrew page</p>
+        </div> */}
+
+
+
+      <h1>내 프로필 </h1>
       
-        </body>  
-    );
+      {modify
+        ? <div>
+          <p><img src="./img/google.jpg" /> </p><p1>{nickname} <button onClick={changeMyinfo} title='modifybtn'  >수정</button></p1><br></br><p1>{userEmail}</p1><br></br>
+          <p>닉네임 :    {nickname} </p> <br></br>
+          <p>소셜 로그인 :   Google</p> <br></br>
+          <p>이메일 :   {userEmail} </p>
+          <p1>내가 만들은 크루 내용</p1> <br></br>
+          <p1>{mc1T}</p1> <br></br>
+          <p1>{mc1I}</p1> <br></br><br></br>
+          <p1>두번째 내가 만든 크루 내용</p1>
+          <br></br>
+          <p1>{mc2T}</p1> <br></br>
+          <p1>{mc2I}</p1>
+
+
+        </div>
+        : <div>
+
+          <p1>닉네임 :    {currentName} <button onClick={changeMyinfo} title='modifybtn'  >저장</button></p1> <br></br>
+          <br></br>
+          <input type='text' value={currentName} placeholder={nickname  } reqiured onChange={onChange} />
+          
+        </div>
+      }
+
+
+
+      {/* <h1> 내 크루 </h1> <br></br>
+      <h1><img src="./img/samson.png" /> {crewTitle} <br></br> {crew} </h1> */}
+
+
+    </body>
+
+  );
 }
 
-export default CreateCrewPage;
+
+
+export default MyPage;
