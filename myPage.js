@@ -97,7 +97,7 @@ function MyPage() {
 
   
 
-  async function showM1() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+  async function showM1() { 
       const docRef = doc(dbService, "crew", mdata);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
