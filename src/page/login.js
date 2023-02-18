@@ -9,7 +9,7 @@ import {
   import { useState, useEffect } from "react";
   import { auth, dbService, storage } from '../fbase';
   import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
-//   import Hello from "./home";
+  import Hello from "../components/home";
   
 
 function Login(){
@@ -75,6 +75,7 @@ function Login(){
           }
         });
       }   
+  
   
     return (
     <div>

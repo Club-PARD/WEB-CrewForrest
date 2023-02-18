@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
-
 import React, { useState, useEffect, useId } from 'react';
+import ListItem from '../components/ListItem';
 import { collection, setDoc, doc, updateDoc, deleteField, deleteDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
 
 import { app, auth, dbService, storage } from "../fbase";
 import "../common.css";
+import { async } from '@firebase/util';
 
 
 function useFetch(url) {
@@ -36,9 +36,21 @@ function CreateCrewPage() {
     const uniqueId = useId(); // 유니크 id를 만들기 위한 useId()
     const [attachment, setAttachment] = useState();
     const data = useFetch("/api/list");
+    const [uid, setUid] = useState("");
+    const [mdata, setMdata] = useState("");
+    const [randomid, setRandomid] = useState();
+    const [ b, setB ] = useState("");
+    const [ e, setE ] = useState("");
+    const [ m, setM] = useState("");
+    const [ n, setN ] = useState("");
+    const [ o, setO ] = useState("");
+    const [ p, setP ] = useState("");
+    const [ v, setV ] = useState("");
+    const [a, setA ] = useState("");
 
- 
-
+    
+    finduid();
+    
     const onChange = (event) => { 
         const {
           target: { value }
@@ -48,41 +60,246 @@ function CreateCrewPage() {
         setCategory(value);
         setIntro(value);
       };
+
       
     //Create
-    function handleOnSubmitWithdoc() { 
-      console.log(CrewTitle);
-        const docRef = addDoc(collection(dbService, "crewPost"), { 
-          CrewTitle: CrewTitle,
-          Oneday: oneday,
-          Category: Category,
-          Intro: Intro,
-        });
-        if (docRef) {
-          setCrew();
-          console.log('crew crewInformation에 저장 성공');
-        } if (CrewTitle.length > 16) {
+    async function handleOnSubmitWithdoc() { 
+      
+      const docRef = await addDoc(collection(dbService, "crew"), {
+        CrewTitle: CrewTitle,
+        Oneday: oneday,
+        Category: Category,
+        Intro: Intro,
+      });
+      setRandomid(docRef.id); 
+      
+      console.log(docRef.id);
+      const docRef2 = doc(dbService, uid, "M");
+      const docSnap = await getDoc(docRef2);
+      const a = docSnap.data();
+      readData();
+      updateData();
+      const alpha = Object.keys(a).length+1;
+      console.log(alpha);
+      const docRef1 = doc(dbService, uid, 'M');
+      updateDoc(docRef1, {
+       [alpha] : randomid
+      });
+          
+         if (CrewTitle.length > 16) {
           alert("양식을 다시 확인해주세요.");
         } else console.log("저장되었습니다!");
+        
       }
-    //Update  
+    
+    
+ 
+    
 
-    // const personCategory = auth.currentUser,uid;
+    async function updateData() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+      
+      const docRef = doc(dbService, "home", "new");
+      console.log(randomid);
+      const docSnap = await getDoc(docRef);
+      updateDoc(docRef, {
+        1 : randomid
+       });
+      
+       console.log("실행중 이상현");
 
-      function handleOnUpdate() {  
+
+      if(Category === "운동/스포츠"){
+        const docRef1 = doc(dbService, "home", "exercise");
+      const docSnap1 = await getDoc(docRef1);
+      updateDoc(docRef1, {
+        1 : randomid
+       });
+      }
+      
+      if(Category === "독서"){
+      const docRef2 = doc(dbService, "home", "book");
+      const docSnap2 = await getDoc(docRef2);
+      updateDoc(docRef2, {
+        1 : randomid
+       });
+    }
+
+    if(Category === "공예"){
+      const docRef3 = doc(dbService, "home", "make");
+      const docSnap3 = await getDoc(docRef3);
+      updateDoc(docRef3, {
+        1 : randomid
+       });
+    }
+
+    if(Category === "사진/영상"){
+      const docRef4 = doc(dbService, "home", "photo");
+      const docSnap4 = await getDoc(docRef4);
+      updateDoc(docRef4, {
+        1 : randomid
+       });
+    }
+
+    if(Category === "봉사활동"){
+      const docRef5 = doc(dbService, "home", "volunteer");
+      const docSnap5 = await getDoc(docRef5);
+      updateDoc(docRef5, {
+        1 : randomid
+       });
+    }
+
+    if(oneday === ""){
+      const docRef6 = doc(dbService, "home", "one");
+      const docSnap6 = await getDoc(docRef6);
+      updateDoc(docRef6, {
+        1 : randomid
+       });
+      
+    }
+  }
+
+  async function readData() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+      
+
+
+    console.log(Category);
+    const docRef = doc(dbService, "home", 'new');
+    const docSnap = await getDoc(docRef);
+    const a = docSnap.data()[1];
+    console.log(a);
+    updateDoc(docRef, {
+        2 : a
+       }); 
+   
+
+    if(Category === '운동/스포츠'){
+      const docRef1 = doc(dbService, "home", "exercise");
+    const docSnap1 = await getDoc(docRef1);
+    const a1 = docSnap1.data()[1];
+    console.log("실행중 ");
+    
+    setE(a1);
+    console.log(a1);
+    updateDoc(docRef1, {
+      2 : a1
+     });
+
+    }
+    
+    if(Category === "독서"){
+    const docRef2 = doc(dbService, "home", "book");
+    const docSnap2 = await getDoc(docRef2);
+    const a2 = docSnap2.data()[1];   
+    setB(a2);
+    updateDoc(docRef2, {
+      2 : b
+     });
+  }
+
+  if(Category === "공예"){
+    const docRef3 = doc(dbService, "home", "make");
+    const docSnap3 = await getDoc(docRef3);
+    const a3 = docSnap3.data()[1];
+    setM(a3);
+    updateDoc(docRef3, {
+      2 : m
+     });
+  }
+
+  if(Category === "사진/영상"){
+    const docRef4 = doc(dbService, "home", "photo");
+    const docSnap4 = await getDoc(docRef4);
+    const a4 = docSnap4.data()[1];
+    setP(a4);
+    updateDoc(docRef4, {
+      2 : p
+     });
+  }
+
+  if(Category === "봉사활동"){
+    const docRef5 = doc(dbService, "home", "volunteer");
+    const docSnap5 = await getDoc(docRef5);
+    const a5 = docSnap5.data()[1];
+    setV(a5);
+    updateDoc(docRef5, {
+      2 : v
+     });
+  }
+
+  if(oneday === ""){
+    const docRef6 = doc(dbService, "home", "one");
+    const docSnap6 = await getDoc(docRef6);
+    const a6 = docSnap6.data()[1];
+    setO(a6);
+    updateDoc(docRef6, {
+      2 : o
+     });
+    
+  }
+}
+
+    async function finduid() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+      const docRef = doc(dbService, "currentuser", "now");
+      const docSnap = await getDoc(docRef);
+       const a = docSnap.data();
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setUid(data.uid);
+        console.log(uid);
+      }
+    }
+
+    async function readM() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+      const docRef = doc(dbService, uid, "M");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        // setFirstStep(docSnap.data().create);
+        const a = docSnap.data();
+        setMdata(a);
+        console.log(mdata);
+      } else {
+        console.log("No such document!");
+        
+      }
+    }
+
+    function updateM() {  // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 특정 field를 업데이트해주고 싶을 때 사용한다
+      
+      const alpha = Object.keys(mdata).length+1;
+      console.log(alpha);
+      const docRef = doc(dbService, uid, 'M');
+      updateDoc(docRef, {
+       [alpha] : randomid
+      });
+      if (docRef) {
+        console.log('update 성공');
+      }
+    }
+
+    
+  
+
+    // crew를 생성하는 함수 => 버튼 눌렸을 때 firebase에 데이터 create 함수 랜덤 id 넣어줌 
+      function crewUpdate() {  
         console.log('update 시작');
-        const docRef = doc(dbService, "crewPost");
+        const docRef = doc(dbService, "crew");
         updateDoc(docRef, {
           CrewTitle: CrewTitle,
           Oneday: oneday,
           Category: Category,
           Intro: Intro,
+          docid : doc.id,
+          docRef : docRef.id
         });
         if (docRef) {
+
           setCrew();
           console.log('update 성공');
         }
       }
+
+
       //Delete
       function handleOnDelte() { 
         console.log('delete 시작');
@@ -128,10 +345,8 @@ function CreateCrewPage() {
           {/* <div class="container"> */}
             <header>
               <div class="site-title">
-                <Link to="/"><img src="/img/로고.png" alt="logo" class="logoBox"/></Link>
-                <Link to="/findCrew"><img src="/img/crewSearchBt.png" alt="searchBt" class="searchBox" /></Link>
-                <p class="headerSection"/>
-                <p class="nameSection" />
+                <img src="/img/로고.png" alt="logo" class="logoBox"/>
+                <img src="/img/crewSearchBt.png" alt="searchBt" class="searchBox" />
               </div>
               
             </header>     
@@ -207,6 +422,20 @@ function CreateCrewPage() {
             </div>
             <br></br>
           {/* </div> */}
+          
+                <section className="list-wrapper">
+                {data.map(
+                    ({board_id, title, start_date, end_date}) => (
+                        <ListItem
+                            board_id={board_id}
+                            title={title}
+                            start_date={start_date}
+                            end_date={end_date}
+                            key={board_id}
+                        />
+                    )
+                )}
+                </section>
         
       
         </body>  

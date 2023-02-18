@@ -1,22 +1,21 @@
 import { Link } from 'react-router-dom';
 
 import React, { useState, useEffect, useId } from 'react';
+import ListItem from '../components/ListItem';
 import { collection, setDoc, doc, updateDoc, deleteField, deleteDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
 
 import { app, auth, dbService, storage } from "../fbase";
-import MyPage from './MyPage';
 import "../common.css";
 
-function findCrew() {
+const findCrew = () => {
   return (
     <body>
         <header>
               <div class="site-title">
-                <Link to="/"><img src="/img/로고.png" alt="logo" class="logoBox"/></Link>
-                <Link to="/findCrew"><img src="/img/crewSearchBt.png" alt="searchBt" class="searchBox" /></Link>
-                <p class="headerSection"/>
-                <p class="nameSection" />
+                <img src="/img/로고.png" alt="logo" class="logoBox"/>
+                <img src="/img/crewSearchBt.png" alt="searchBt" class="searchBox" />
               </div>
+              
             </header>     
             <ul>
             <li><a href="/">홈</a></li>
@@ -42,6 +41,7 @@ function findCrew() {
                 크루 활동 지역 : 서울 전지역<br></br>
                 </p>
                 <img src="/img/크루지원.png" alt="" class="applyBt"/>
+
             </div>
 
         <h1>findCrew</h1>
