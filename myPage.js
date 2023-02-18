@@ -30,7 +30,13 @@ function MyPage() {
   const [Intro, setIntro] = useState("");
   const [mdata, setMdata] = useState("");
   const [mdata2, setMdata2] = useState("");
-  
+  const [mc1T, setmc1T] = useState(); // make crew 1 title 
+  const [mc1I, setmc1I] = useState(); // make crew 1 title 
+  const [mc2T, setmc2T] = useState(); // make crew 1 title 
+  const [mc2I, setmc2I] = useState(); // make crew 1 title 
+  const [makecrew2, setMakecrew2] = useState();
+  const [makecrew1, setMakecrew1] = useState();
+
 
   // --------------------------------------------------------- 여기부터 새로 짜는 코드 ---------------------------------------------------------------------------------------------- //    
 
@@ -38,6 +44,10 @@ function MyPage() {
 
   finduid();
   setUserInfo();
+  readM(); // 찾은 uid로 M1 정보를 읽어오는 함수 
+  showM1();
+  showM2();
+
 
   useEffect(() => {     
     console.log(auth.currentUser);                      // 한번만 닉네임 유저 이름으로 설정 
@@ -97,15 +107,18 @@ function MyPage() {
 
   
 
-  async function showM1() { 
+  async function showM1() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
       const docRef = doc(dbService, "crew", mdata);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        // setFirstStep(docSnap.data().create);
-        const a = docSnap.data()['0'];
-        console.log(a, mdata);
+        const a = docSnap.data()['CrewTitle'];
+        const b = docSnap.data()['Intro']
+       
+        setmc1T(a);
+        setmc1I(b);
         
+        console.log(makecrew1);
       } else {
         console.log("No such document!");
         
@@ -117,10 +130,12 @@ function MyPage() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
-      // setFirstStep(docSnap.data().create);
-      const a = docSnap.data();
-      const b = a['0'];
-      console.log(a['0'], "실행중입니당당");
+        const a = docSnap.data()['CrewTitle'];
+        const b = docSnap.data()['Intro']
+       
+        setmc2T(a);
+        setmc2I(b);
+        
     } else {
       console.log("No such document!");
       
@@ -139,6 +154,7 @@ function MyPage() {
       setMdata(docSnap.data()[alpha1]);
       const alpha2 = Object.keys(a).length;
       setMdata2(docSnap.data()[alpha2]);
+      console.log(mdata, mdata2);
     } else {
       console.log("No such document!");
       
@@ -164,14 +180,7 @@ function MyPage() {
 
  
 
-  function showData(){
-    finduid(); // uid 찾는 함수 
-    readM(); // 찾은 uid로 가장 최근 쓴 글 M 의 2개 정보 읽어오는 함수 (랜덤 아이디 읽어옴 )
-    showM1(); (읽어온 랜덤 ID로 console창에 띄우는 함수 )
-    showM2(); (m1은 두번째 최근 정보 요 함수는 가장 최근 쓴 글 읽어옵니다) 
-    
-  }
-
+  
 
 
   const onChange = (event) => { //input 값이 입력 될 때 onchange를 통해 자동적으로 setState해준다! = 동기화 시켜주기
@@ -231,20 +240,29 @@ function MyPage() {
 
 
       <h1>내 프로필 </h1>
-      <button onClick={showData}  >안녕안녕</button>
+      
       {modify
         ? <div>
           <p><img src="./img/google.jpg" /> </p><p1>{nickname} <button onClick={changeMyinfo} title='modifybtn'  >수정</button></p1><br></br><p1>{userEmail}</p1><br></br>
           <p>닉네임 :    {nickname} </p> <br></br>
           <p>소셜 로그인 :   Google</p> <br></br>
           <p>이메일 :   {userEmail} </p>
+          <p1>내가 만들은 크루 내용</p1> <br></br>
+          <p1>{mc1T}</p1> <br></br>
+          <p1>{mc1I}</p1> <br></br><br></br>
+          <p1>두번째 내가 만든 크루 내용</p1>
+          <br></br>
+          <p1>{mc2T}</p1> <br></br>
+          <p1>{mc2I}</p1>
+
+
         </div>
         : <div>
 
           <p1>닉네임 :    {currentName} <button onClick={changeMyinfo} title='modifybtn'  >저장</button></p1> <br></br>
           <br></br>
           <input type='text' value={currentName} placeholder={nickname  } reqiured onChange={onChange} />
-
+          
         </div>
       }
 
