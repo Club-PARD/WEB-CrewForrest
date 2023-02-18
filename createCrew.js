@@ -38,7 +38,7 @@ function CreateCrewPage() {
     const [uid, setUid] = useState("");
     const [mdata, setMdata] = useState("");
     const [randomid, setRandomid] = useState("");
-    const [ b, setB ] = useState("");
+    const [ b, setB ] = useState(""); // book document 넣을때 필요한 변수 밑에 emnopv 도 같은 맥락 
     const [ e, setE ] = useState("");
     const [ m, setM] = useState("");
     const [ n, setN ] = useState("");
@@ -72,8 +72,8 @@ function CreateCrewPage() {
           console.log('crew crewInformation에 저장 성공');
           console.log(docRef.id);
           setRandomid(docRef.id);
-          finduid();
-          readM();
+          finduid(); // 현재 유저의 uid 찾기 
+          readM(); // 찾은 uid로 M(자기가 적은 글 랜덤 id읽기 ) 
           readData();
           updateData();
           updateM();
