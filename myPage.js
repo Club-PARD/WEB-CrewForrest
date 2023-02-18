@@ -95,22 +95,7 @@ function MyPage() {
     }
   }
 
-  async function readM() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-    const docRef = doc(dbService, uid, "M");
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      // setFirstStep(docSnap.data().create);
-      const a = docSnap.data();
-      const b = a['1'];
-      setMdata(b);
-      const c = a['2'];
-      setMdata2(c); 
-    } else {
-      console.log("No ");
-      
-    }
-  }
+  
 
   async function showM1() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
       const docRef = doc(dbService, "crew", mdata);
@@ -118,9 +103,8 @@ function MyPage() {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
         // setFirstStep(docSnap.data().create);
-        const a = docSnap.data();
-        const b = a['0'];
-        console.log(a['0']);
+        const a = docSnap.data()['0'];
+        console.log(a, mdata);
         
       } else {
         console.log("No such document!");
@@ -136,12 +120,32 @@ function MyPage() {
       // setFirstStep(docSnap.data().create);
       const a = docSnap.data();
       const b = a['0'];
-      console.log(a['0']);
+      console.log(a['0'], "실행중입니당당");
     } else {
       console.log("No such document!");
       
     }
   }
+
+  async function readM() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, uid, "M");
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      // setFirstStep(docSnap.data().create);
+      const a = docSnap.data();
+      const alpha1 = Object.keys(a).length-1;
+      setMdata(docSnap.data()[alpha1]);
+      const alpha2 = Object.keys(a).length;
+      setMdata2(docSnap.data()[alpha2]);
+    } else {
+      console.log("No such document!");
+      
+    }
+  }
+
+ 
 
   async function readm2(props) { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
     const docRef = doc(dbService, "crew", mdata[props]);
@@ -165,6 +169,7 @@ function MyPage() {
     readM(); // 찾은 uid로 M1 정보를 읽어오는 함수 
     showM1();
     showM2();
+    
   }
 
 
