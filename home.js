@@ -3,29 +3,25 @@ import { Link } from 'react-router-dom';
 import { collection, setDoc, doc, updateDoc, deleteField, deleteDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
 import { app, auth, dbService, storage } from "../fbase";
 import "../common.css";
-import Modal from './modal';
+import Modal from './Modal';
 
 
 import {
-    BrowserRouter as Router,
-    Route,
-    Routes,
-  } from "react-router-dom"; 
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom"; 
  
 
-  import { useEffect } from "react";
-  import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
-  import Hello from "./home";
+import { useEffect } from "react";
+import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
+import Hello from "./home";
 import { async } from '@firebase/util';
+
   
-
-
-
 const Home = () => {
 
-
-
-   const [imageUpload, setImageUpload] = useState();
+  const [imageUpload, setImageUpload] = useState();
   const [imageUrl, setImageUrl] = useState("");
 
   const [userData, setUserData] = useState("");
@@ -38,30 +34,30 @@ const Home = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [ b1, set1B ] = useState("");
-    const [ e1, set1E ] = useState("");
-    const [ m1, set1M] = useState("");
-    const [ n1, set1N ] = useState("");
-    const [ o1, set1O ] = useState("");
-    const [ p1, set1P ] = useState("");
-    const [ v1, set1V ] = useState("");
-    const [ b2, set2B ] = useState("");
-    const [ e2, set2E ] = useState("");
-    const [ m2, set2M] = useState("");
-    const [ n2, set2N ] = useState("");
-    const [ o2, set2O ] = useState("");
-    const [ p2, set2P ] = useState("");
-    const [ v2, set2V ] = useState("");
+  const [ e1, set1E ] = useState("");
+  const [ m1, set1M] = useState("");
+  const [ n1, set1N ] = useState("");
+  const [ o1, set1O ] = useState("");
+  const [ p1, set1P ] = useState("");
+  const [ v1, set1V ] = useState("");
+  const [ b2, set2B ] = useState("");
+  const [ e2, set2E ] = useState("");
+  const [ m2, set2M] = useState("");
+  const [ n2, set2N ] = useState("");
+  const [ o2, set2O ] = useState("");
+  const [ p2, set2P ] = useState("");
+  const [ v2, set2V ] = useState("");
 
-    // async function showData(){
-    //   const docRef = doc(dbService, "home", "book");
-    //   const docSnap = await getDoc(docRef);
-    //   if (docSnap.exists()) {
-    //     console.log("Document data:", docSnap.data());
-    //     set
-    //   }
-
-      
-    // }
+  const [transformValue, setTransformValue] = useState(0);
+  const handle1Click = () => {
+    setTransformValue(0);
+  };
+  const handle2Click = () => {
+    setTransformValue(-100);
+  };
+  const handle3Click = () => {
+    setTransformValue(-200);
+  };
 
 
   const openModal = () => {
@@ -70,58 +66,54 @@ const Home = () => {
   const closeModal = () => {
     setModalOpen(false);
   }
+
+  finduid();
+  console.log(nickname);
+
+
+  async function setUserName() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, "user", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      console.log(data);
+      setNickname(data['nickname']);
+      console.log(nickname);      
+    } 
+  }
   
+  async function finduid() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
+    const docRef = doc(dbService, "currentuser", "now");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setUid(data["uid"]);
+      console.log(uid);
+      setUserName();
+    } 
+  }
 
-    finduid();
-    console.log(nickname);
-    
-    
-    
-    async function setUserName() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-      const docRef = doc(dbService, "user", uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log(data);
-        setNickname(data['nickname']);
-        console.log(nickname);
-      } 
+
+  function makeCurrentUid(){
+    const docRef = setDoc(doc(dbService, "currentuser", "now"), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
+      uid : auth.currentUser.uid
+    });
+    if (docRef) {
+      console.log('현재 로그인한 유저 저장 성공');
     }
-    
-    async function finduid() { // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 내용을 읽어올 때 사용한다.
-      const docRef = doc(dbService, "currentuser", "now");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setUid(data["uid"]);
-        console.log(uid);
-        setUserName();
-      } 
+  }
+
+  function makeUser() {  // 로그인 처음일 시 collection user에 개인 uid로 document 생성 field에 각종 정보들 생성 함수 
+    console.log('User, uid 정보들 저장 시작');
+    const docRef = setDoc(doc(dbService, "user", auth.currentUser.uid), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
+      nickname: auth.currentUser.displayName,
+      email : auth.currentUser.email,
+      uid : auth.currentUser.uid
+    });
+    if (docRef) {
+      console.log('create firstStep에 저장 성공');
     }
-
-    
-    
-
-    function makeCurrentUid(){
-      const docRef = setDoc(doc(dbService, "currentuser", "now"), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
-        uid : auth.currentUser.uid
-      });
-      if (docRef) {
-        console.log('현재 로그인한 유저 저장 성공');
-      }
-    }
-
-    function makeUser() {  // 로그인 처음일 시 collection user에 개인 uid로 document 생성 field에 각종 정보들 생성 함수 
-      console.log('User, uid 정보들 저장 시작');
-      const docRef = setDoc(doc(dbService, "user", auth.currentUser.uid), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
-        nickname: auth.currentUser.displayName,
-        email : auth.currentUser.email,
-        uid : auth.currentUser.uid
-      });
-      if (docRef) {
-        console.log('create firstStep에 저장 성공');
-      }
-    }  
+  }  
 
   function makeLMA(){   // 로그인 처음일 시 collection 개인 uid로 document LMA 생성해주는 함수 
     console.log("개인 Like생성");
@@ -147,14 +139,13 @@ const Home = () => {
   const onClickButton = () => {
     setIsOpen(true);
   };
-
-  async function checkNewUser(){    
-    console.log("돌아가는중 ");          // 로그인 처음인지 확인해 주는 함수 
+  
+  async function checkNewUser(){
+    console.log("돌아가는중 ");          // 로그인 처음인지 확인해 주는 함수
     const docRef = doc(dbService, "user", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         console.log('기존 유저');
-        
     } else {
       console.log('User, uid 정보들 저장 시작');
       const docRef = setDoc(doc(dbService, "user", auth.currentUser.uid), { // create라는 collection 안에 firstStep이라는 document에 저장하겠다는 뜻
@@ -166,7 +157,7 @@ const Home = () => {
       if (docRef) {
         console.log('create firstStep에 저장 성공');
       }
-    } 
+    }
   }
 
   function deleteCurrentuser() {  // firebase Delete : 함수 원하는 collection 안에 원하는 doc 안에 특정 field를 삭제한다.
@@ -179,15 +170,13 @@ const Home = () => {
       console.log('delete 성공');
     }
   }
-
   const onLogOutClick = () => { // 로그아웃
     auth.signOut();
     console.log('logout')
   };
 
-  function GoogleLogin() {  
+  function GoogleLogin() {
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
-    
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
         deleteCurrentuser();
@@ -196,24 +185,16 @@ const Home = () => {
         const personUid = auth.currentUser.uid;
         const personEmail = auth.currentUser.email;
         makeCurrentUid();
-
-        checkNewUser(); // 로그인 처음인지 확인해 주는 함수 처음이면 logFirst true 
-        
-      } 
-        
+        checkNewUser(); // 로그인 처음인지 확인해 주는 함수 처음이면 logFirst true
+      }
       )
       .catch((err) => {
         console.log(err);
-      }); 
-
+      });
   }
 
-  
-  
-
-  
-  return (
-    <div>
+return (
+  <div>
     <body>
       <header>
           <div class="site-title">
@@ -226,19 +207,30 @@ const Home = () => {
               <Modal open={modalOpen} close={closeModal} header="" src="/img/로고.png">
                 <img src="/img/googleLogin.png" class ="googleLoginBt" onClick={GoogleLogin}/>
               </Modal>
+              
               </React.Fragment>
           </div>
       </header>
-      
-      <div class="carousel-wrapper"></div>
-      <img src="/img/1.png" alt="" class="carouselBox"/>
-              {/* <img src="/img/2.png" alt=""/>
-              <img src="/img/3.png" alt=""/> */}
-              <div class="carouselBt"></div>
-              <div class="carouselNumBt"></div>
-              <button class="carouselCircle1" type="button"></button>
-              <button class="carouselCircle2" type="button"></button> 
-              <button class="carouselCircle3" type="button"></button> 
+      {/******************캐러셀 구현*******************/}
+        <button className="carouselCircle1" onClick={handle1Click}></button>
+        <button className="carouselCircle2" onClick={handle2Click}></button>
+        <button className="carouselCircle3" onClick={handle3Click}></button>
+
+        <div
+          className="carousel-container"
+          style={{ transform: `translateX(${transformValue}vw)` }}
+        >
+          <div class="inner">
+            <img src="/img/1.png"/>
+          </div>
+          <div class="inner">
+              <img src="/img/2.png"/>
+          </div>
+          <div class="inner">
+            <img src="/img/3.png"/>
+          </div>
+        </div>  
+
       <ul>
           <li><a href="/">홈</a></li>
           <li><a href="/createcrew">크루 만들기</a></li>
@@ -249,8 +241,8 @@ const Home = () => {
       <img src="./img/copyright.png" alt="" class="copyright"/>
       <div class="navBarIntro2">2023 크루의 숲</div>
     <br></br>
-    <div class="hotCrewText">🔥요즘 HOT한 크루</div>
-    <div class="hotCrewBox1">
+     <div class="hotCrewText">🔥요즘 HOT한 크루</div>
+    {/*<div class="hotCrewBox1">
       <img src="/img/running.png" alt="" class="hotCrewPic1"/>
       <p class="hotCrewTitle1">포항시 러닝크루 모집해요!</p>
       <p class="hotCrewContent">
@@ -260,7 +252,7 @@ const Home = () => {
       크루 정모 일정 : 2023.02.10(금) 서울 종로구 테니스장 예정<br></br> 
       크루 활동 지역 : 서울 전지역<br></br>
       </p>
-    </div>
+    </div> */}
   
   
 
@@ -272,9 +264,8 @@ const Home = () => {
       </>
       </body>
   </div>
-  );
+);
 };
-
 
 
 export default Home;
