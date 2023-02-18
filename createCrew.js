@@ -38,7 +38,7 @@ function CreateCrewPage() {
     const [uid, setUid] = useState("");
     const [mdata, setMdata] = useState("");
     const [randomid, setRandomid] = useState("");
-    const [ b, setB ] = useState(""); // book document 넣을때 필요한 변수 밑에 emnopv 도 같은 맥락 
+    const [ b, setB ] = useState("");
     const [ e, setE ] = useState("");
     const [ m, setM] = useState("");
     const [ n, setN ] = useState("");
@@ -72,11 +72,11 @@ function CreateCrewPage() {
           console.log('crew crewInformation에 저장 성공');
           console.log(docRef.id);
           setRandomid(docRef.id);
-          finduid(); // 현재 유저의 uid 찾기 
-          readM(); // 찾은 uid로 M(자기가 적은 글 랜덤 id읽기 ) 
-          readData(); // Data 예전꺼 지우기 
-          updateData(); // Data 방금 만든거 추가하기 1번으로 => 요거는 collection home 에서 각각의 document에 맞게 (ex 독서 , 원데이 => d, o , n(new crew) 에 업데이트됨 )
-          updateM(); // 개인 uid M 항목에 추가 
+          finduid();
+          readM();
+          readData();
+          updateData();
+          updateM();
           
 
         } if (CrewTitle.length > 16) {
@@ -90,11 +90,11 @@ function CreateCrewPage() {
       
       const docRef = doc(dbService, "home", "new");
       const docSnap = await getDoc(docRef);
-
       updateDoc(docRef, {
         1 : randomid
        });
 
+       
        console.log("실행중 이상현");
 
 
@@ -156,6 +156,14 @@ function CreateCrewPage() {
     setN(a);
     updateDoc(docRef, {
         2 : n
+       });
+
+    const docRefm = doc(dbService, uid, 'M');
+    const docSnapm = await getDoc(docRef);
+    const am = docSnapm.data()[1];
+    // setN(a);
+    updateDoc(docRef, {
+        2 : am
        });
 
  
@@ -253,7 +261,7 @@ function CreateCrewPage() {
     }
 
     function updateM() {  // firebase Update : 함수 원하는 collection 안에 원하는 doc 안에 특정 field를 업데이트해주고 싶을 때 사용한다
-      console.log('update 시작');
+      
       const alpha = Object.keys(mdata).length+1;
       const docRef = doc(dbService, uid, 'M');
       updateDoc(docRef, {
