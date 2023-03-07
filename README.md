@@ -14,23 +14,23 @@
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| primary | ![#2145ff](https://via.placeholder.com/10/2145ff?text=+) #2145ff |
-| Secondary | ![#09439A](https://via.placeholder.com/10/09439A?text=+) #09439A |
-| light blue | ![#B7C3FF](https://via.placeholder.com/10/B7C3FF?text=+) #B7C3FF |
+| primary | ![#6C8F56](https://via.placeholder.com/10/6C8F56?text=+) #6C8F56 |
+| Secondary | ![#95C677](https://via.placeholder.com/10/95C677?text=+) #95C677 |
+| light green | ![#BFE4A8](https://via.placeholder.com/10/BFE4A8?text=+) #BFE4A8 |
 | light disable | ![#F4F7FC](https://via.placeholder.com/10/E2E2E2?text=+) #E2E2E2 |
   
   <h3> Logo Design</h3>
-  <img src=https://user-images.githubusercontent.com/96922342/218287272-2ac757a9-d64a-41c2-9808-c4bf2f3f55b3.png?,width="150" height="75"/>
+  <img src=https://user-images.githubusercontent.com/96922342/223485509-61d0da10-5430-4eb8-b9aa-fd7b15335e9c.png?,width="150" height="75"/>
    
 
  <div><h2>📚 프로젝트 소개 </div>
    
-   전화가 두려운사회초년생들을 위한 앱 솔루션
+   코로나 이후로 오프라인 동호회에 관심있는 모든 이들이게
    
    <h3>핵심 기능<h3>
-     <h4>1.두렵고 떨리는 전화 통화,미리 준비하자</h4>
-       누구에게, 언제, 어떤 말을 할지 전화내용을 미리 작성하고 연습해보세요. 훨씬 더 침착하고 안정적인 통화가 될거에요!
-     <h4>2.끊으면 잊어버리는 통화내용 메모로 기억하자</h4>
-       전화가 걸려오면 가장 최근 메모를 통해 발신자의 용건을 미리 유추보세요. 통화 중에는 새로운 메모를 작성할 수도 있어요. 메모를 통해 중요한 업무사항을 놓치지 마세요!
-     <h4>2.알쏭달쏭 직장생활 어휘 쉽고 빠르게 익히자</h4>
-       직장생활에서 꼭 필요한 우리말 어휘와 전화 예절을 학습합니다. 각종 퀴즈, 동영상 콘텐츠, 전문가 상담을 통해 체계적으로 업무에 적용해보세요!
+     <h4>1.원데이 크루 모집</h4>
+       일회성 혹은 체험을 통해 분위기 파악을 원하거나,하루만이라도 참여해보고 싶은 사용자의 편의성 증대
+     <h4>2.크루 찾기</h4>
+       원하는 카테고리 선택을 통해 빠른 크루 탐색 및 신청
+     <h4>3.크루 만들기</h4>
+짧지만 가장 필수적인 크루 모집글 양식을 제공하여 쉽고 빠른 크루 생성
